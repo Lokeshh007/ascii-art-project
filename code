@@ -1,0 +1,139 @@
+
+import os
+
+data = [
+    " ***  ****   ***  ****  ***** *****  ***  *   * ***** ***** *   * *     *   * *   *  ***  ****   ***  ****   **** ***** *   * *   * *   * *   * *   * *****        ***                     ***  ***   ****  ****  *   * *****  ***  *****  ***   ***  ",
+    "*   * *   * *   * *   * *     *     *     *   *   *      *  *  *  *     ** ** **  * *   * *   * *   * *   * *       *   *   * *   * *   *  * *   * *     *        * ***                   *   *   *       *     * *   * *     *         * *   * *   * ",
+    "*   * ****  *     *   * ***   ****  *  ** *****   *      *  ***   *     * * * * * * *   * ****  *   * ****  *****   *   *   * *   * * * *   *     *     *         * * *       *****       *   *   *       *   **  ***** ***** *****    *   **** ***** ",
+    "***** *   * *   * *   * *     *     *   * *   *   *   *  *  *  *  *     *   * *  ** *   * *     *   * *  *      *   *   *   *  * *  ** **  * *    *    *          * * *              ***  *   *   *   ***       *     *     * *   *    *  *   *     * ",
+    "*   * ****   ***  ****  ***** *      ***  *   * *****  ***  *   * ***** *   * *   *  ***  *      ***  *   * ****    *   *****   *   *   * *   *   *   *****        ***  *****        ***   ***  ***** ***** ****      * *****  ***    *    ***  ****  "
+]
+
+
+def mainUI():
+    while True:
+        os.system("clear")
+        print("\n\n", "*"*10, "ASCII ART PROJECT", "*"*10, end="\n\n")
+        print("OPTIONS -- \n\n")
+        print("1. One Character")
+        print("2. Words (Maximum 15 Letters)")
+        print("3. Range (input in Sequence - Max 15 Letters)")
+        print("4. Only Alphabets")
+        print("5. Only Numbers & Symbols (@,-,_,.)")
+        print("6. Exit")
+        ch = input("\nEnter Your Choice -- ")
+
+        if ch == "1":
+            oneCharacter()
+        elif ch == "2":
+            alphaNumWords()
+        elif ch == "3":
+            alphaRange()
+        elif ch == "4":
+            onlyAlpha()
+        elif ch == "5":
+            onlyNumSymb()
+        elif ch == "6":
+            break
+        else:
+            print(" Invalid choice!")
+
+        again = input("\nPress Y to continue, any other key to exit... ").lower()
+        if again != "y":
+            break
+
+def get_index(ch):
+    if ch.isdigit():  # 0–9
+        return (ord(ch) - 17) * 6
+    elif ch == " ":
+        return 26 * 6
+    elif ch == "@":
+        return 27 * 6
+    elif ch == "_":
+        return 28 * 6
+    elif ch == "-":
+        return 29 * 6
+    elif ch == ".":
+        return 30 * 6
+    else:  # alphabets
+        return (ord(ch) - 65) * 6
+
+def oneCharacter():
+    os.system("clear")  
+    ch = input("Enter a single character: ").upper()
+    if len(ch) != 1:
+        print(" Enter exactly one character!\n")
+        return
+    idx = get_index(ch)
+    for line in data:
+        print(line[idx:idx+6])
+
+def alphaNumWords():
+    os.system("clear")
+    text = input("Enter string (<=15 chars): ").upper()
+    if not (1 <= len(text) <= 15):
+        print(" Enter up to 15 characters!\n")
+        return
+    for line in data:
+        for ch in text:
+            idx = get_index(ch)
+            print(line[idx:idx+6], end="")
+        print()
+
+
+
+def alphaRange():
+    os.system("clear")
+    print("\n\n","*"*10,"ASCII ART PROJECT","*"*10,end="\n\n")
+    start = input("Enter start character: ").upper()
+    end = input("Enter end character: ").upper()
+
+    # validate input
+    if len(start) != 1 or len(end) != 1 or not start.isalnum() or not end.isalnum():
+        print(" Please enter valid single characters (A-Z or 0-9)!\n")
+        return
+
+    # make sure start <= end
+    if ord(start) > ord(end):
+        start, end = end, start
+
+    text = "".join(chr(c) for c in range(ord(start), ord(end)+1))
+
+    print(f"\nYou Entered Range: {start}-{end} → {text}\n")
+    for line in data:
+        for ch in text:
+            idx = get_index(ch)
+            print(line[idx:idx+6], end="")
+        print()
+
+def onlyAlpha():
+    os.system("clear")
+    print("\n\n","*"*10,"ASCII ART PROJECT","*"*10,end="\n\n")
+    text = input("Enter alphabets (A–Z only) -- ").upper()
+
+    # validation: only alphabets
+    if not text.isalpha():
+        print(" Please enter alphabets only!\n")
+        return
+
+    print(f"Alphabets Entered: {text}\n")
+    for line in data:
+        for ch in text:
+            idx = get_index(ch)
+            print(line[idx:idx+6], end="")
+        print()
+
+def onlyNumSymb():
+    os.system("clear")
+    print("\n\n","*"*10,"ASCII ART PROJECT","*"*10,end="\n\n")
+    text = input("enter your Number or sumbol-") 
+    
+    print(f"Numbers & Symbols: {text}\n")
+    for line in data:
+        for ch in text:
+            idx = get_index(ch)
+            print(line[idx:idx+6], end="")
+        print()
+
+
+mainUI()
